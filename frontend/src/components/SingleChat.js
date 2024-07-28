@@ -16,7 +16,8 @@ import io from "socket.io-client";
 import UpdateGroupChatModel from "./miscellaneous/UpdateGroupChatModel";
 import { ChatState } from "../context/ChatProvider";
 import { Flex } from "@chakra-ui/react";
-const ENDPOINT = "http://localhost:5000"; // "https://talk-a-tive.herokuapp.com"; -> After deployment
+// const ENDPOINT = "http://localhost:5000"; // "https://talk-a-tive.herokuapp.com"; -> After deployment
+const ENDPOINT = "http://172.31.67.144:5000"; // "https://talk-a-tive.herokuapp.com"; -> After deployment
 var socket, selectedChatCompare;
 
 const SingleChat = ({ fetchAgain, setFetchAgain }) => {
@@ -74,6 +75,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   const sendMessage = async (event) => {
     if (event.key === "Enter" && newMessage) {
       socket.emit("stop typing", selectedChat._id);
+      
       try {
         const config = {
           headers: {
@@ -83,7 +85,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         };
         setNewMessage("");
         const { data } = await axios.post(
-          "/api/message",
+          "/api/message/",
           {
             content: newMessage,
             chatId: selectedChat,
@@ -93,6 +95,9 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         socket.emit("new message", data);
         setMessages([...messages, data]);
       } catch (error) {
+
+        console.log(error);
+
         toast({
           title: "Error Occured!",
           description: "Failed to send the Message",
@@ -117,7 +122,6 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
 
   useEffect(() => {
     fetchMessages();
-
     selectedChatCompare = selectedChat;
     // eslint-disable-next-line
   }, [selectedChat]);
@@ -140,7 +144,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
 
   const typingHandler = (e) => {
     setNewMessage(e.target.value);
-
+    console.log(e.target.value);
     if (!socketConnected) return;
 
     if (!typing) {
@@ -238,7 +242,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         <Input
           variant="filled"
           bg="#E0E0E0"
-          placeholder="Enter a message.."
+          placeholder="Enter a message :)"
           value={newMessage}
           onChange={typingHandler}
         />

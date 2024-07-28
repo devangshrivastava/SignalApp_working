@@ -81,7 +81,7 @@ function SideDrawer() {
       };
 
       const { data } = await axios.get(`/api/user?search=${search}`, config);
-
+      console.log(data);
       setLoading(false);
       setSearchResult(data);
     } catch (error) {
@@ -206,13 +206,14 @@ function SideDrawer() {
               <Button onClick={handleSearch}>Go</Button>
             </Box>
             {loading ? (
+                console.log(searchResult),
               <ChatLoading />
             ) : (
-              searchResult?.map((user) => (
+              searchResult?.map((person) => (
                 <UserListItem
-                  key={user._id}
-                  user={user}
-                  handleFunction={() => accessChat(user._id)}
+                  key={person._id}
+                  user={person}
+                  handleFunction={() => accessChat(person._id)}
                 />
               ))
             )}

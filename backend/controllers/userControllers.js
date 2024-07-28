@@ -58,7 +58,7 @@ const authUser = async_handler(async (req, res) => {
 
 const allUsers = async_handler(async (req, res) => {
    
-    console.log(req.query.search);
+    // console.log(req.query.search);
     
     const keyword = req.query.search ? {
         $or: [
@@ -67,9 +67,9 @@ const allUsers = async_handler(async (req, res) => {
         ],
     }:{};
 
-    console.log(keyword);
-    const users = (await User.find(keyword)).findIndex({_id: {$ne: req.user._id}});
-    console.log(users);
+    // console.log(keyword);
+    const users = (await User.find(keyword))
+    // console.log(users);
 
     res.send(users);
 });
