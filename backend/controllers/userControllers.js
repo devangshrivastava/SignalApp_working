@@ -67,9 +67,7 @@ const allUsers = async_handler(async (req, res) => {
         ],
     }:{};
 
-    // console.log(keyword);
     const users = (await User.find(keyword))
-    // console.log(users);
 
     res.send(users);
 });
